@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const statsSchema = require('./Stats').schema;
 const gamesSchema = require('./Games').schema;
+
+//importing stats and games schemas to make user schema more concise
+
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -24,6 +27,7 @@ const userSchema = new mongoose.Schema({
     stats: [statsSchema],
     friends: {
         type: Array,
+        default: [],
     },
     createdAt: {
         type: Date,
