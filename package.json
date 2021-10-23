@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -16,5 +18,13 @@
   "bugs": {
     "url": "https://github.com/brodie-m/quiz-app-back/issues"
   },
-  "homepage": "https://github.com/brodie-m/quiz-app-back#readme"
+  "homepage": "https://github.com/brodie-m/quiz-app-back#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "moment": "^2.29.1",
+    "socket.io": "^4.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.14"
+  }
 }
