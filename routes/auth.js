@@ -4,6 +4,10 @@ const verify = require("../middleware/auth");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+router.get('/', (req,res) => {
+    res.status(200).send('hello world from auth')
+})
+
 router.post('/register', async (req,res) => {
     //first need to do validation on submitted data
     //we will do this using Joi
