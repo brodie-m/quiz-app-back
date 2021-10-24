@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const gamesSchema = new mongoose.Schema({
     games: {
         type: Array,
-        default: [],
+        required: true,
+        default: ['test'],
     }
 })
 

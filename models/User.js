@@ -23,8 +23,35 @@ const userSchema = new mongoose.Schema({
         min: 6,
         max: 1024
     },
-    games: [gamesSchema],
-    stats: [statsSchema],
+    // games: [gamesSchema],
+    games: {
+        type: Array,
+        required: true,
+        default: ['test'],
+    },
+    // stats: [statsSchema],
+    stats: {
+        xp: {
+            type: Number,
+            required: true,
+            default: 0,
+        },
+        level: {
+            type: Number,
+            required: true,
+            default: 1,
+        },
+        numGames: {
+            type: Number,
+            required: true,
+            default: 0,
+        },
+        numWins: {
+            type: Number,
+            required: true,
+            default: 0,
+        }
+    },
     friends: {
         type: Array,
         default: [],

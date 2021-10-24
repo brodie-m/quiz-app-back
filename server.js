@@ -5,6 +5,7 @@ const cors = require('cors')
 
 //import routes
 const helloWorldRoute = require('./routes/helloWorld')
+const authRoute = require('./routes/auth')
 //.env config
 dotenv.config();
 //middleware
@@ -16,6 +17,7 @@ app.use(cors({
 
 //routes
 app.use('/', helloWorldRoute);
+app.use('/api/auth', authRoute);
 
 
 module.exports = app;
