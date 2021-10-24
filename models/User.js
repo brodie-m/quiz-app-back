@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
-const statsSchema = require('./Stats').schema;
-const gamesSchema = require('./Games').schema;
+// for now I am doing without these schema as the default values were not working
+
+// const statsSchema = require('./Stats').schema;
+// const gamesSchema = require('./Games').schema;
+
+//importing stats and games schemas to make user schema more concise
+
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -20,10 +25,38 @@ const userSchema = new mongoose.Schema({
         min: 6,
         max: 1024
     },
-    games: [gamesSchema],
-    stats: [statsSchema],
+    // games: [gamesSchema],
+    games: {
+        type: Array,
+        required: true,
+        default: ['test'],
+    },
+    // stats: [statsSchema],
+    stats: {
+        xp: {
+            type: Number,
+            required: true,
+            default: 0,
+        },
+        level: {
+            type: Number,
+            required: true,
+            default: 1,
+        },
+        numGames: {
+            type: Number,
+            required: true,
+            default: 0,
+        },
+        numWins: {
+            type: Number,
+            required: true,
+            default: 0,
+        }
+    },
     friends: {
         type: Array,
+        default: [],
     },
     createdAt: {
         type: Date,
