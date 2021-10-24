@@ -31,6 +31,10 @@ function App() {
     setMessage('')
   }, [messages])
 
+  useEffect(() => {
+    fetchData()
+  },[])
+
   function handleMessageChange(e) {
     setMessage(e.target.value);
   }
@@ -67,6 +71,7 @@ function App() {
     setCurrentChat(currentChat);
   }
 
+
   function sendMessage() {
     const payload = {
       content: message,
@@ -83,6 +88,13 @@ function App() {
       });
     });
     setMessages(newMessages);
+  }
+
+  async function fetchData() {
+    const result = await fetch('https://opentdb.com/api.php?amount=10&category=24&difficulty=medium&type=multiple')
+    const data = await result.json()
+    console.log(data.results)
+    return data
   }
 
   function connect() {
