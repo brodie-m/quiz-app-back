@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
-const statsSchema = require('./Stats').schema;
-const gamesSchema = require('./Games').schema;
+// for now I am doing without these schema as the default values were not working
+
+// const statsSchema = require('./Stats').schema;
+// const gamesSchema = require('./Games').schema;
 
 //importing stats and games schemas to make user schema more concise
 

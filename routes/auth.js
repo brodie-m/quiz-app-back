@@ -30,20 +30,14 @@ router.post('/register', async (req,res) => {
         //save new user in db
         await user.save()
         //generate a token - whatever we use to sign is returned on verification
-        const token = jwt.sign({_id: user._id, name:user.name, email: user.email},
+        const token = jwt.sign({...user},
              process.env.TOKEN_SECRET,
              {expiresIn : 10000000},
              );
         //send the token in the response header
         res.header('auth-token',token);
         //finally send back user info and token
-        res.status(201).send({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            token: token,
-
-        })
+        res.status(201).send(user)
     } catch (error) {
         res.status(500).send(error)
     }
