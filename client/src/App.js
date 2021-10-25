@@ -27,16 +27,47 @@ function App() {
   const [allUsers, setAllUsers] = useState([]);
   const [messages, setMessages] = useState(initialMessagesState);
   const [message, setMessage] = useState("");
-  const [questionData, setQuestionData] = useState("")
   const socketRef = useRef();
 
   const dispatch = useDispatch();
   const results = useSelector((state) => state.questions)
-  const search = () => dispatch(getQuestions())
+  const search = (searchTerm) => dispatch(getQuestions(searchTerm))
 
   useEffect(() => {
-    search()
-  }, [])
+    let isMounted = true;
+    const searchArr = [{
+      amount: 10,
+      category: 9,
+      difficulty: `medium`,
+      type: `multiple`
+    },
+    {
+      amount: 10,
+      category: 10,
+      difficulty: `medium`,
+      type: `multiple`
+    },
+    {
+      amount: 10,
+      category: 11,
+      difficulty: `medium`,
+      type: `multiple`
+    },
+    {
+      amount: 10,
+      category: 12,
+      difficulty: `medium`,
+      type: `multiple`
+    },];
+    
+    const search = (searchTerm) => dispatch(getQuestions(searchTerm))
+    if(isMounted) {
+    search(
+      searchArr[Math.floor(Math.random() * searchArr.length -1)]
+      )
+    }
+      return () => {isMounted = false};
+  }, [connectedRooms, dispatch])
 
   useEffect(() => {
     setMessage("");
@@ -127,19 +158,7 @@ function App() {
       });
     });
   }
-  useEffect(  () => {
-    let isMounted = true;
-    async function fetchData() {
-      const result = await fetch(
-        "https://opentdb.com/api.php?amount=10&category=24&difficulty=medium&type=multiple"
-      );
-      const data = await result.json();
-      console.log(data)
-      if (isMounted) {setQuestionData(data.results)}
-    }
-    fetchData()
-    return ()=> {isMounted = false}
-  },[])
+  
 
   
 
