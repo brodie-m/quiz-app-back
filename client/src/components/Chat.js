@@ -60,7 +60,7 @@ const Chat = (props) => {
                 
           
           { props.currentChat.chatName === 'javascript' ? 
-            props.questions.map((question,index) => {
+            props.results.map((question,index) => {
               return (
                 <div className='question' key={index}>
                 <p>{question.question}</p>

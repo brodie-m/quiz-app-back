@@ -2,13 +2,14 @@ const initialState = {
     questions: []
 }
 
-export default (state = initialState, { type, payload }) => {
+const resultsReducer = (state = initialState, { type, payload }) => {
     switch (type) {
 
     case 'LOAD_QUESTIONS':
-        return { ...state, ...payload }
+        return {...state, questions: payload }
 
     default:
         return state
     }
 }
+export default resultsReducer

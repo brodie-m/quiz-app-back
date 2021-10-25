@@ -3,6 +3,9 @@ import io from "socket.io-client";
 import Form from "./components/Form";
 import Chat from "./components/Chat";
 import immer from "immer";
+
+import { getQuestions } from "./actions";
+import { useDispatch, useSelector } from "react-redux";
 import "./App.css";
 
 const initialMessagesState = {
@@ -27,7 +30,14 @@ function App() {
   const [questionData, setQuestionData] = useState("")
   const socketRef = useRef();
 
-  
+  const dispatch = useDispatch();
+  const results = useSelector((state) => state.questions)
+  const search = () => dispatch(getQuestions())
+
+  useEffect(() => {
+    search()
+  }, [])
+
   useEffect(() => {
     setMessage("");
   }, [messages]);
@@ -149,7 +159,8 @@ function App() {
           currentChat={currentChat}
           toggleChat={toggleChat}
           messages={messages[currentChat.chatName]}
-          questions={questionData}
+          getQuestions = {search}
+          results={results}
         />
         
           
