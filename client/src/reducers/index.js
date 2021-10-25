@@ -1,3 +1,1 @@
-const initialState = {
-    
-}
+export {default as reducer} from './resultsReducer'
