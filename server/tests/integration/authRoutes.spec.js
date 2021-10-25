@@ -56,7 +56,17 @@ describe("Auth route tests", () => {
     .set("Content-Type", "application/json");
   expect(res.statusCode).toEqual(400);
   });
-  it("allows login of existing user", () => {});
+  it("allows login of existing user", async () => {
+    const res = await request(api)
+      .post('/api/auth/login')
+      .send({
+        email: 'test-email@email.com',
+        password: 'test-pass'
+      })
+      .set("Content-Type", "application/json");
+      expect(res.statusCode).toEqual(200);
+      
+  });
   it("does not allow login with incorrect email", () => {});
   it("does not allow login with incorrect password", () => {});
 });
