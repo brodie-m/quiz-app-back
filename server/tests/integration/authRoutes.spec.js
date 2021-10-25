@@ -67,6 +67,24 @@ describe("Auth route tests", () => {
       expect(res.statusCode).toEqual(200);
       
   });
-  it("does not allow login with incorrect email", () => {});
-  it("does not allow login with incorrect password", () => {});
+  it("does not allow login with incorrect email", async () => {
+    const res = await request(api)
+      .post('/api/auth/login')
+      .send({
+        email: 'incorrect@email.com',
+        password: 'password'
+      })
+      .set("Content-Type", "application/json");
+      expect(res.statusCode).toEqual(400)
+  });
+  it("does not allow login with incorrect password", async () => {
+    const res = await request(api)
+      .post('/api/auth/login')
+      .send({
+        email: 'test-email@email.com',
+        password: 'incorrect-pass'
+      })
+      .set("Content-Type", "application/json");
+      expect(res.statusCode).toEqual(400)
+  });
 });
