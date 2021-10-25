@@ -59,7 +59,7 @@ const Chat = (props) => {
                 {props.messages.map(renderMessages)}
                 
           
-          {
+          { props.currentChat.chatName === 'javascript' ? 
             props.questions.map((question,index) => {
               return (
                 <div className='question' key={index}>
@@ -67,7 +67,7 @@ const Chat = (props) => {
                 <p>{question.correct_answer}</p>
               </div>
             )
-          })}
+          }) : <div>no questions here</div>}
         
           
             </Messages>
