@@ -5,7 +5,6 @@ import Chat from "./components/Chat";
 import immer from "immer";
 import "./App.css";
 
-
 const initialMessagesState = {
   general: [],
   jokes: [],
@@ -25,28 +24,25 @@ function App() {
   const [allUsers, setAllUsers] = useState([]);
   const [messages, setMessages] = useState(initialMessagesState);
   const [message, setMessage] = useState("");
+  const [questionData, setQuestionData] = useState("")
   const socketRef = useRef();
 
+  
   useEffect(() => {
-    setMessage('')
-  }, [messages])
-
-  useEffect(() => {
-    fetchData()
-  },[])
+    setMessage("");
+  }, [messages]);
 
   function handleMessageChange(e) {
     setMessage(e.target.value);
   }
 
   function handleChange(e) {
-    setUsername(e.target.value)
+    setUsername(e.target.value);
   }
 
   function roomJoinCallback(incomingMessages, room) {
-    const newMessages = immer(messages, draft => {
+    const newMessages = immer(messages, (draft) => {
       draft[room] = incomingMessages;
-
     });
     setMessages(newMessages);
   }
@@ -63,14 +59,13 @@ function App() {
 
   function toggleChat(currentChat) {
     if (!messages[currentChat.chatName]) {
-      const newMessages = immer(messages, draft => {
+      const newMessages = immer(messages, (draft) => {
         draft[currentChat.chatName] = [];
-      })
+      });
       setMessages(newMessages);
     }
     setCurrentChat(currentChat);
   }
-
 
   function sendMessage() {
     const payload = {
@@ -90,65 +85,85 @@ function App() {
     setMessages(newMessages);
   }
 
-  async function fetchData() {
-    const result = await fetch('https://opentdb.com/api.php?amount=10&category=24&difficulty=medium&type=multiple')
-    const data = await result.json()
-    console.log(data.results)
-    return data
-  }
+  
 
   function connect() {
     setConnected(true);
     const socket = io("http://localhost:3001", {
       withCredentials: true,
     });
-    socket.connect()
-  
-    socketRef.current = socket
-    console.log(socketRef.current)
-    socketRef.current.emit('join-server', username);
-    socketRef.current.emit('join-room', 'general', (messages) => {
-      roomJoinCallback(messages, 'general')
-    });
-    socketRef.current.on('new-user', allUsers => {
-      setAllUsers(allUsers)
-      console.log(allUsers)
-    })
-    socketRef.current.on('new-message', ({content,sender,chatName}) => {
-      setMessages(messages => {
-        const newMessages = immer(messages, draft => {
-          if (draft[chatName]) {
-            draft[chatName].push({content, sender})
-          } else {
-            draft[chatName] = [{content, sender}]
-          }
+    socket.connect();
 
+    socketRef.current = socket;
+    console.log(socketRef.current);
+    socketRef.current.emit("join-server", username);
+    socketRef.current.emit("join-room", "general", (messages) => {
+      roomJoinCallback(messages, "general");
+    });
+    socketRef.current.on("new-user", (allUsers) => {
+      setAllUsers(allUsers);
+      console.log(allUsers);
+    });
+    socketRef.current.on("new-message", ({ content, sender, chatName }) => {
+      setMessages((messages) => {
+        const newMessages = immer(messages, (draft) => {
+          if (draft[chatName]) {
+            draft[chatName].push({ content, sender });
+          } else {
+            draft[chatName] = [{ content, sender }];
+          }
         });
         return newMessages;
-      })
-    })
+      });
+    });
   }
+  useEffect(  () => {
+    let isMounted = true;
+    async function fetchData() {
+      const result = await fetch(
+        "https://opentdb.com/api.php?amount=10&category=24&difficulty=medium&type=multiple"
+      );
+      const data = await result.json();
+      console.log(data)
+      if (isMounted) {setQuestionData(data.results)}
+    }
+    fetchData()
+    return ()=> {isMounted = false}
+  },[])
+
+  
 
   let body;
+
   if (connected) {
     body = (
-      <Chat
-        message={message}
-        handleMessageChange={handleMessageChange}
-        sendMessage={sendMessage}
-        yourId={socketRef.current ? socketRef.current.id : ""}
-        allUsers={allUsers}
-        joinRoom={joinRoom}
-        connectedRooms={connectedRooms}
-        currentChat={currentChat}
-        toggleChat={toggleChat}
-        messages={messages[currentChat.chatName]}
-      />
+      <div>
+        <Chat
+          message={message}
+          handleMessageChange={handleMessageChange}
+          sendMessage={sendMessage}
+          yourId={socketRef.current ? socketRef.current.id : ""}
+          allUsers={allUsers}
+          joinRoom={joinRoom}
+          connectedRooms={connectedRooms}
+          currentChat={currentChat}
+          toggleChat={toggleChat}
+          messages={messages[currentChat.chatName]}
+          questions={questionData}
+        />
+        
+          
+      </div>
     );
   } else {
     body = (
-      <Form username={username} onChange = {handleChange} connect = {connect} onSubmit={connect}/>
-    )
+      <Form
+        username={username}
+        onChange={handleChange}
+        connect={connect}
+        onSubmit={connect}
+      />
+    );
   }
 
   return <div className="App">{body}</div>;

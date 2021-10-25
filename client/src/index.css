@@ -11,3 +11,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.questions {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1
+}

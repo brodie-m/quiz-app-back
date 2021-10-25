@@ -57,6 +57,19 @@ const Chat = (props) => {
         body = (
             <Messages>
                 {props.messages.map(renderMessages)}
+                
+          
+          {
+            props.questions.map((question,index) => {
+              return (
+                <div className='question' key={index}>
+                <p>{question.question}</p>
+                <p>{question.correct_answer}</p>
+              </div>
+            )
+          })}
+        
+          
             </Messages>
         )
     } else {
@@ -138,7 +151,10 @@ const Chat = (props) => {
             {props.currentChat.chatName}
         </ChannelInfo>
 
-        <BodyContainer>{body}</BodyContainer>
+        <BodyContainer>
+            {body}
+            
+            </BodyContainer>
         <TextBox
           value={props.message}
           onChange={props.handleMessageChange}
