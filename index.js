@@ -47,9 +47,9 @@ io.on('connection', socket=> {
     socket.on('send-message', payload => {
         console.log('send-message event received')
         if (!messages[payload.room]) {messages[payload.room] =[]}
-        messages[payload.room].push(payload.message)
+        messages[payload.room].push({username: payload.username, message : payload.message})
         console.log('message is',payload.message, 'sent to',payload.room)
-        socket.emit('display-messages', {username: payload.username,room: payload.room, messages: messages[payload.room]})
+        socket.emit('display-messages', {room: payload.room, messages: messages[payload.room]})
     })
     
     socket.on('disconnect', () => {
