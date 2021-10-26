@@ -52,13 +52,19 @@ io.on('connection', socket=> {
     })
 
     socket.on('join-room', async (room) => {
-        const foundRoom = await Room.findOne({name: room})
+        try {
+            const foundRoom = await Room.findOne({name: room})
         foundRoom.participants = [...foundRoom.participants, `${socket.id}`]
         await foundRoom.save()
         console.log(`${socket.id} joined room ${room}`)
         socket.join(room)
         socket.emit('display-messages',{room: room, messages: messages[room] })
         socket.to(room).emit('display-messages',{room: room, messages: messages[room] })
+        }
+        catch (err) {
+            console.log(err)
+        }
+        
         
     })
     socket.on('send-message', payload => {
