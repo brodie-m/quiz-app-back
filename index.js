@@ -78,6 +78,12 @@ io.on('connection', socket=> {
         socket.emit('display-messages', {room: payload.room, messages: messages[payload.room]})
     })
     
+    socket.on('start-game', payload => {
+        //receive start-game from room creator, send questions to others in room
+        socket.to(payload.room).emit('game-start', payload.questions)
+        
+    })
+
     socket.on('disconnect', async () => {
         const foundRooms = await Room.find({participants: `${socket.id}`})
         foundRooms.forEach(room => {
