@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const Games = require("../models/User");
+const Games = require("../models/Games");
 const verify = require("../middleware/auth");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
