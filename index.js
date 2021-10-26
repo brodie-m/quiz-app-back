@@ -82,6 +82,7 @@ io.on('connection', socket=> {
         foundRooms.forEach(room => {
             room.participants.pull(`${socket.id}`)
             console.log('removing', socket.id, 'from room', room)
+            room.save()
         })
         console.log('disconnecting')
         
