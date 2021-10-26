@@ -56,7 +56,7 @@ io.on('connection', socket=> {
         foundRoom.participants = [...foundRoom.participants, `${socket.id}`]
         await foundRoom.save()
         console.log(`${socket.id} joined room ${room}`)
-        socket.join(foundRoom.name)
+        socket.join(room)
         
     })
     socket.on('send-message', payload => {
