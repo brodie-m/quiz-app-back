@@ -53,7 +53,6 @@ io.on('connection', socket=> {
 
     socket.on('join-room', async (room) => {
         const foundRoom = await Room.findOne({name: room})
-        console.log(foundRoom)
         foundRoom.participants = [...foundRoom.participants, `${socket.id}`]
         await foundRoom.save()
         console.log(`${socket.id} joined room ${room}`)
@@ -66,6 +65,7 @@ io.on('connection', socket=> {
         messages[payload.room].push({username: payload.username, message : payload.message})
         console.log('message is',payload.message, 'sent to',payload.room)
         socket.to(payload.room).emit('display-messages', {room: payload.room, messages: messages[payload.room]})
+        socket.emit('display-messages', {room: payload.room, messages: messages[payload.room]})
     })
     
     socket.on('disconnect', () => {
