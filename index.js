@@ -77,7 +77,12 @@ io.on('connection', socket=> {
         socket.emit('display-messages', {room: payload.room, messages: messages[payload.room]})
     })
     
-    socket.on('disconnect', () => {
+    socket.on('disconnect', async () => {
+        const foundRooms = await Room.find({participants: `${socket.id}`})
+        foundRooms.forEach(room => {
+            room.participants.pull(`${socket.id}`)
+            console.log('removing', socket.id, 'from room', room)
+        })
         console.log('disconnecting')
         
     })
