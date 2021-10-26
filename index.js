@@ -49,7 +49,7 @@ io.on('connection', socket=> {
         if (!messages[payload.room]) {messages[payload.room] =[]}
         messages[payload.room].push(payload.message)
         console.log('message is',payload.message, 'sent to',payload.room)
-        socket.emit('display-messages', {room: payload.room, messages: messages[payload.room]})
+        socket.emit('display-messages', {username: payload.username,room: payload.room, messages: messages[payload.room]})
     })
     
     socket.on('disconnect', () => {
