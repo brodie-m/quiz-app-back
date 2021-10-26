@@ -51,6 +51,7 @@ io.on('connection', socket=> {
     })
     socket.on('send-message', (room, message) => {
         console.log('send-message event received')
+        console.log('message is',message)
         socket.emit('send-message', (room, message))
     })
     
