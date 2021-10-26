@@ -58,7 +58,7 @@ io.on('connection', socket=> {
         await foundRoom.save()
         console.log(`${socket.id} joined room ${room}`)
         socket.join(room)
-        socket.emit('display-messages',{room: room, messages: messages[room] })
+        // socket.emit('display-messages',{room: room, messages: messages[room] })
         socket.to(room).emit('display-messages',{room: room, messages: messages[room] })
         }
         catch (err) {
