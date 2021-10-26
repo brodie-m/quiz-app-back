@@ -9,7 +9,7 @@ router.get('/', async (req,res) => {
 })
 router.get('/show', async (req,res) => {
     const results = await Games.find();
-    res.send(results)
+    res.json(results)
 
 })
 
