@@ -79,7 +79,9 @@ io.on('connection', socket=> {
     })
     
     socket.on('start-game', payload => {
-        console.log('game starting')
+        
+        console.log('start game received')
+        console.log('payload is', payload)
         //receive start-game from room creator, send questions to others in room
         socket.to(payload.room).emit('game-start', payload.questions)
         
