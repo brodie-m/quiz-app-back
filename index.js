@@ -55,9 +55,10 @@ io.on('connection', socket=> {
         try {
             const foundRoom = await Room.findOne({name: room})
         if (!foundRoom.participants.includes(socket.id)){
-        foundRoom.participants = [...foundRoom.participants, `${socket.id}`]}
+        foundRoom.participants = [...foundRoom.participants, `${socket.id}`]
+        console.log(`${socket.id} joined room ${room}`)}
         await foundRoom.save()
-        console.log(`${socket.id} joined room ${room}`)
+        
         socket.join(room)
         socket.emit('display-messages',{room: room, messages: messages[room] })
         // socket.to(room).emit('display-messages',{room: room, messages: messages[room] })
