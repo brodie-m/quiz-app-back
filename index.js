@@ -35,7 +35,7 @@ let users = []
 let messages = {}
 //run when client connects
 io.on('connection', socket=> {
-    socket.join('test-room')
+    
     console.log('new websocket connection')
     console.log(socket.rooms)
     socket.on('connect_error', (err) => {
@@ -43,7 +43,7 @@ io.on('connection', socket=> {
     })
     socket.on('join-room', (room) => {
         console.log(`${socket.id} joined room ${room}`)
-        console.log(socket.rooms)
+        socket.join(room)
     })
     socket.on('send-message', payload => {
         console.log('send-message event received')
