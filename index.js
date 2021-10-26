@@ -54,7 +54,8 @@ io.on('connection', socket=> {
     socket.on('join-room', async (room) => {
         try {
             const foundRoom = await Room.findOne({name: room})
-        foundRoom.participants = [...foundRoom.participants, `${socket.id}`]
+        if (!foundRoom.participants.includes(socket.id)){
+        foundRoom.participants = [...foundRoom.participants, `${socket.id}`]}
         await foundRoom.save()
         console.log(`${socket.id} joined room ${room}`)
         socket.join(room)
