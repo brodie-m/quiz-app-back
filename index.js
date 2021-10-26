@@ -51,7 +51,7 @@ io.on('connection', socket=> {
     })
     socket.on('send-message', (room, message) => {
         console.log('send-message event received')
-        socket.emit('send-message', room, message)
+        socket.emit('send-message', (room, message))
     })
     
     socket.on('disconnect', () => {
