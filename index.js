@@ -41,12 +41,19 @@ const messages = {
 //run when client connects
 io.on('connection', socket=> {
     console.log('new websocket connection')
+    console.log(socket.rooms)
     socket.on('connect_error', (err) => {
         console.log(`connect_error due to ${err.message}`)
     })
     socket.on('join-room', (room) => {
         console.log(`${socket.id} joined room ${room}`)
+        console.log(socket.rooms)
     })
+    socket.on('send-message', (room, message) => {
+        console.log('send-message event received')
+        socket.to(room).emit('send-message', room, message)
+    })
+    
     socket.on('disconnect', () => {
         console.log('disconnecting')
         
