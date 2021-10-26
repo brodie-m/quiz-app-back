@@ -9,7 +9,7 @@ router.get('/', async (req,res) => {
 })
 router.get('/show', async (req,res) => {
     const results = await Room.find();
-    res.json(results)
+    res.status(201).json(results)
 
 })
 
