@@ -49,10 +49,10 @@ io.on('connection', socket=> {
         console.log(`${socket.id} joined room ${room}`)
         console.log(socket.rooms)
     })
-    socket.on('send-message', (room, message) => {
+    socket.on('send-message', payload => {
         console.log('send-message event received')
-        console.log('message is',message, 'sent to',room)
-        socket.emit('send-message', (room, message))
+        console.log('message is',payload.message, 'sent to',payload.room)
+        socket.emit('send-message', {room: payload.room, message: payload.message})
     })
     
     socket.on('disconnect', () => {
