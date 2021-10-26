@@ -32,12 +32,7 @@ mongoose.connect(process.env.DB_CONNECT, {
     console.log('connected to db')
 })
 let users = []
-const messages = {
-    general: [],
-    random: [],
-    jokes: [],
-    javascript: []    
-}
+let messages = {}
 //run when client connects
 io.on('connection', socket=> {
     console.log('new websocket connection')
@@ -51,8 +46,10 @@ io.on('connection', socket=> {
     })
     socket.on('send-message', payload => {
         console.log('send-message event received')
+        if (!messages[payload.room]) {messages[payload.room] =[]}
+        messages[payload.room].push(payload.message)
         console.log('message is',payload.message, 'sent to',payload.room)
-        socket.emit('send-message', {room: payload.room, message: payload.message})
+        socket.emit('display-messages', {room: payload.room, messages: messages[payload.room]})
     })
     
     socket.on('disconnect', () => {
