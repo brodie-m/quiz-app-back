@@ -44,50 +44,12 @@ io.on('connection', socket=> {
     socket.on('connect_error', (err) => {
         console.log(`connect_error due to ${err.message}`)
     })
-    socket.on('join-server', (username) => {
-        console.log('joining server')
-        const user = {
-            username,
-            id: socket.id
-        }
-        users.push(user);
-        io.emit('new-user',users)
+    socket.on('join-room', (room) => {
+        console.log(`${socket.id} joined room ${room}`)
     })
-
-    socket.on('join-room',(roomName, cb) => {
-        console.log('joining room')
-        socket.join(roomName);
-        cb(console.log(roomName));
-    })
-
-    socket.on('send-message', ({content, to, sender, chatName, isChannel}) => {
-        if (isChannel) {
-            const payload = {
-                content,
-                chatName,
-                sender,
-            };
-            socket.to(to).emit('new-message', payload);
-        } else {
-            const payload = {
-                content,
-                chatName: sender,
-                sender
-            }
-            socket.to(to).emit('new-message', payload)
-        }
-        if (messages[chatName]) { 
-            messages[chatName].push({
-                sender,
-                content
-            });
-        }
-
-    });
     socket.on('disconnect', () => {
         console.log('disconnecting')
-        users = users.filter(u => u.id !== socket.id);
-        io.emit('new-user',users)
+        
     })
 })
 
