@@ -2,6 +2,7 @@ const path = require('path')
 const http = require('http');
 const express = require('express')
 const mongoose = require('mongoose')
+const Room = require('./models/Room')
 const dotenv = require('dotenv')
 const app = require('./server');
 const socketio = require('socket.io');
@@ -41,9 +42,22 @@ io.on('connection', socket=> {
     socket.on('connect_error', (err) => {
         console.log(`connect_error due to ${err.message}`)
     })
-    socket.on('join-room', (room) => {
-        console.log(`${socket.id} joined room ${room}`)
+    socket.on('create-room', (room) => {
+        const newRoom = new Room({
+            name: room,
+            participants: [`${socket.id}`]
+        })
+        newRoom.save();
         socket.join(room)
+    })
+
+    socket.on('join-room', async (room) => {
+        const foundRoom = await Room.findOne({name: room})
+        foundRoom.partcipants.push(`${socket.id}`)
+        await foundRoom.save()
+        console.log(`${socket.id} joined room ${room}`)
+        socket.join(foundRoom.name)
+        
     })
     socket.on('send-message', payload => {
         console.log('send-message event received')
