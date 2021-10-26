@@ -57,7 +57,7 @@ io.on('connection', socket=> {
     socket.on('join-room',(roomName, cb) => {
         console.log('joining room')
         socket.join(roomName);
-        cb(messages[roomName]);
+        cb(console.log(roomName));
     })
 
     socket.on('send-message', ({content, to, sender, chatName, isChannel}) => {
