@@ -12,5 +12,9 @@ router.get('/show', async (req,res) => {
     res.status(201).json(results)
 
 })
+router.get('/show/:name', async (req,res) => {
+    const result = await Room.findOne({name: req.params.name})
+    res.status(201).json(result)
+})
 
 module.exports = router
