@@ -7,6 +7,7 @@ const cors = require('cors')
 
 const authRoute = require('./routes/auth')
 const userRoute = require('./routes/user')
+const gamesRoute = require('./routes/games')
 //.env config
 dotenv.config();
 //middleware
@@ -20,6 +21,7 @@ app.use(cors({
 
 app.use('/api/auth', authRoute);
 app.use('/api/user', userRoute);
+app.use('/api/games', gamesRoute)
 
 
 module.exports = app;
