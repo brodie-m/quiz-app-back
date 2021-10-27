@@ -8,6 +8,11 @@ router.get('/', async (req,res) => {
     res.status(200).send('hello world from games')
 })
 router.get('/show', async (req,res) => {
+    const emptyRooms = await Room.find({participants: {$size : 0}})
+        emptyRooms.forEach(room => {
+            console.log('pruning room', room)
+            await room.delete()
+        })
     const results = await Room.find();
     res.status(201).json(results)
 
