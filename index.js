@@ -100,8 +100,8 @@ io.on('connection',async (socket)=> {
             setTimeout(() => {
                 socket.emit('next-question')
             }, 10000);
-        }
-)
+        })})
+
 
     socket.on('disconnect', async () => {
         const foundRooms = await Room.find({participants: `${socket.id}`})
@@ -115,6 +115,7 @@ io.on('connection',async (socket)=> {
         
     })
 })
+
 
 
 server.listen(PORT, () => console.log(`We are live on port ${PORT}`))
