@@ -134,8 +134,9 @@ io.on("connection", async (socket) => {
             console.log('found matching dude')
             participant.score = payload.score
         }
+        gameToUpdate.save()
     })
-    gameToUpdate.save()
+    
 })
   socket.on("disconnect", async () => {
     const foundRooms = await Room.find({ participants: `${socket.id}` });
