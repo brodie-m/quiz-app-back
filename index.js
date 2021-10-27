@@ -128,9 +128,9 @@ io.on("connection", async (socket) => {
   });
   socket.on('end-game', async (payload) => {
     console.log('ending game for',socket.id)
-    const gameToUpdate = await Game.findOne({newGame})
+    const gameToUpdate = await Game.findOne({_id: payload.gameId})
     gameToUpdate.participants.forEach((participant) => {
-        if(participant.participant===socket.id) {
+        if(participant.participant==socket.id) {
             console.log('found matching dude')
             participant.score = payload.score
         }
