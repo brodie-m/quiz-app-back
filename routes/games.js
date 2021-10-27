@@ -26,7 +26,8 @@ router.get('/completedgames', async (req,res) => {
 })
 
 router.get('/completedgames/:id', async (req,res) => {
-    
+    const foundGame = await Game.find({_id: req.params.id})
+    res.status(201).json(foundGame)
 })
 
 module.exports = router
