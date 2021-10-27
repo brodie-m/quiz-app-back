@@ -109,7 +109,7 @@ io.on("connection", async (socket) => {
     //receive start-game from room creator, send questions to others in room
 
     const newGame = new Game({
-      participants: payload.participants,
+      participants: [],
       questions: payload.questions,
     });
 
@@ -118,7 +118,7 @@ io.on("connection", async (socket) => {
     socket
       .to(payload.room)
       .emit("game-start", {
-        questions: payload.questions,
+        questions: [payload.questions],
         gameId: newGame._id,
       });
     socket.emit("game-start", {
@@ -129,27 +129,8 @@ io.on("connection", async (socket) => {
   socket.on('end-game', async (payload) => {
     console.log('ending game for',socket.id)
     console.log('payload is', payload)
-    const game = await Game.findOne({_id: payload.gameId})
-    await game.delete()
-    const gameToUpdate = new Game({
-        _id: game._id,
-        participants: game.participants,
-        questions: game.questions,
-    })
-    console.log(gameToUpdate)
-    gameToUpdate.participants.forEach((participant) => {
-        if(participant.participant==socket.id) {
-            console.log('found matching dude')
-            console.log(participant.score)
-            participant.score = payload.score
-            console.log(participant.score,payload.score)
-            gameToUpdate.save(function(err,doc) {
-                if (err) return console.log(err);
-                console.log('saved successfully')
-            })
-        }
-        
-    })
+    await Game.updateOne({_id: payload.gameId}, {$push: {participants: {participant: socket.id, score: payload.score}}})
+    
     
 })
   socket.on("disconnect", async () => {
