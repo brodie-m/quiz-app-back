@@ -134,8 +134,8 @@ io.on("connection", async (socket) => {
         if(participant.participant==socket.id) {
             console.log('found matching dude')
             console.log(participant.score)
-            participant.score.set('score',payload.score)
-            console.log(participant.score)
+            participant.score = payload.score
+            console.log(participant.score,payload.score)
             gameToUpdate.save()
         }
         
