@@ -95,21 +95,13 @@ io.on('connection',async (socket)=> {
             questions: payload.questions,
 
         })
-        await newGame.save()
-        const currentTime = Date.now()   
-        const inter = setInterval(() => {
-                const intervalTime = Date.now() - currentTime
-
-                if(intervalTime>=10000){
-                 
-                  
-                  //check if answer is right
-                  clearInterval(inter)
-                  socket.emit('next-question')
-
-                }}, 100);
-        
-    })
+        await newGame.save()  
+        socket.on('load-question', () => {
+            setTimeout(() => {
+                socket.emit('next-question')
+            }, 10000);
+        }
+)
 
     socket.on('disconnect', async () => {
         const foundRooms = await Room.find({participants: `${socket.id}`})
