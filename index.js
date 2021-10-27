@@ -88,8 +88,7 @@ io.on('connection',async (socket)=> {
         console.log('start game received')
         console.log('payload is', payload)
         //receive start-game from room creator, send questions to others in room
-        socket.to(payload.room).emit('game-start', payload.questions)
-        socket.emit('game-start', payload.questions)
+        
         const newGame = new Game({
             participants: payload.participants,
             questions: payload.questions,
@@ -98,6 +97,8 @@ io.on('connection',async (socket)=> {
         
         await newGame.save()  
         console.log(newGame._id)
+        socket.to(payload.room).emit('game-start', {questions: payload.questions, gameId: newGame._id})
+        socket.emit('game-start', {questions: payload.questions, gameId: newGame._id})
         socket.on('end-game', async (payload) => {
             const gameToUpdate = await Game.findOne({newGame})
             gameToUpdate.participants.forEach((participant) => {
