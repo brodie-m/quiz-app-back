@@ -100,9 +100,11 @@ io.on('connection',async (socket)=> {
         socket.to(payload.room).emit('game-start', {questions: payload.questions, gameId: newGame._id})
         socket.emit('game-start', {questions: payload.questions, gameId: newGame._id})
         socket.on('end-game', async (payload) => {
+            console.log('ending game for',socket.id)
             const gameToUpdate = await Game.findOne({newGame})
             gameToUpdate.participants.forEach((participant) => {
                 if(participant.participant===socket.id) {
+                    console.log('found matching dude')
                     participant.score = payload.score
                 }
             })
