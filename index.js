@@ -129,7 +129,8 @@ io.on("connection", async (socket) => {
   socket.on('end-game', async (payload) => {
     console.log('ending game for',socket.id)
     console.log('payload is', payload)
-    const gameToUpdate = await Game.find({_id: payload.gameId})
+    const gameToUpdate = await Game.find({_id: payload.gameId})[0]
+    console.log(gameToUpdate)
     gameToUpdate.participants.forEach((participant) => {
         if(participant.participant==socket.id) {
             console.log('found matching dude')
