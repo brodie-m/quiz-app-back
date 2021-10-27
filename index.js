@@ -6,7 +6,8 @@ const Room = require('./models/Room')
 const dotenv = require('dotenv')
 const app = require('./server');
 const socketio = require('socket.io');
-const cors = require('cors')
+const cors = require('cors');
+const Game = require('./models/Game');
 const server = http.createServer(app)
 const io = socketio(server, {
     cors: {
@@ -81,7 +82,7 @@ io.on('connection',async (socket)=> {
         socket.emit('display-messages', {room: payload.room, messages: messages[payload.room], participants: payload.participants})
     })
     
-    socket.on('start-game', payload => {
+    socket.on('start-game', async payload => {
     
         
         console.log('start game received')
@@ -89,6 +90,12 @@ io.on('connection',async (socket)=> {
         //receive start-game from room creator, send questions to others in room
         socket.to(payload.room).emit('game-start', payload.questions)
         socket.emit('game-start', payload.questions)
+        const newGame = new Game({
+            participants: payload.participants,
+            questions: payload.questions,
+
+        })
+        await newGame.save()
         
     })
 

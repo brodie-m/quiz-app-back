@@ -21,5 +21,12 @@ router.get('/show/:name', async (req,res) => {
     const result = await Room.findOne({name: req.params.name})
     res.status(201).json(result)
 })
+router.get('/completedgames', async (req,res) => {
+
+})
+
+router.get('/completedgames/:id', async (req,res) => {
+    
+})
 
 module.exports = router
