@@ -95,6 +95,7 @@ io.on('connection',async (socket)=> {
             questions: payload.questions,
 
         })
+        socket.emit('next-question')
         await newGame.save()  
         socket.on('load-question', () => {
             setTimeout(() => {
