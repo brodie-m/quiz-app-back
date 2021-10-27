@@ -101,8 +101,8 @@ io.on('connection',async (socket)=> {
         socket.on('end-game', async (payload) => {
             const gameToUpdate = await Game.findOne({newGame})
             gameToUpdate.participants.forEach((participant) => {
-                if(participant===socket.id) {
-                    participant = {participant: participant, score: payload.score}
+                if(participant.participant===socket.id) {
+                    participant.score = payload.score
                 }
             })
             gameToUpdate.save()
