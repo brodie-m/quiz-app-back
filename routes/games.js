@@ -3,6 +3,7 @@ const Room = require("../models/Room");
 const verify = require("../middleware/auth");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Game = require("../models/Game");
 
 router.get('/', async (req,res) => {
     res.status(200).send('hello world from games')
