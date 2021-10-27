@@ -11,7 +11,7 @@ router.get('/show', async (req,res) => {
     const emptyRooms = await Room.find({participants: {$size : 0}})
         emptyRooms.forEach(room => {
             console.log('pruning room', room)
-            await room.delete()
+            room.delete()
         })
     const results = await Room.find();
     res.status(201).json(results)
