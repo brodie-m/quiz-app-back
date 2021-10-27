@@ -96,9 +96,10 @@ io.on('connection',async (socket)=> {
 
         })
         await newGame.save()
-
+        const currentTime = Date.now()   
         const inter = setInterval(() => {
-                
+                const intervalTime = Date.now() - currentTime
+
                 if(intervalTime>=10000){
                  
                   
