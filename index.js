@@ -38,6 +38,8 @@ let messages = {}
 io.on('connection', socket=> {
     
     console.log('new websocket connection')
+    
+
     console.log(socket.rooms)
     socket.on('connect_error', (err) => {
         console.log(`connect_error due to ${err.message}`)
@@ -94,6 +96,11 @@ io.on('connection', socket=> {
             room.participants.pull(`${socket.id}`)
             console.log('removing', socket.id, 'from room', room)
             room.save()
+        })
+        const emptyRooms = await Room.find({participants: {$size : 0}})
+        emptyRooms.forEach(room => {
+            console.log('pruning room', room)
+            room.delete()
         })
         console.log('disconnecting')
         
