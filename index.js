@@ -106,7 +106,7 @@ io.on('connection',async (socket)=> {
                 }
             })
             gameToUpdate.save()
-        })
+        })})
 
 
     socket.on('disconnect', async () => {
