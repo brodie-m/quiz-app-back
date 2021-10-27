@@ -104,6 +104,7 @@ io.on('connection',async (socket)=> {
                  
                   
                   //check if answer is right
+                  clearInterval(inter)
                   socket.emit('next-question')
 
                 }}, 100);
