@@ -118,7 +118,7 @@ io.on("connection", async (socket) => {
     socket
       .to(payload.room)
       .emit("game-start", {
-        questions: [payload.questions],
+        questions: payload.questions,
         gameId: newGame._id,
       });
     socket.emit("game-start", {
