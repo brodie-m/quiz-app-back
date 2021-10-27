@@ -129,14 +129,17 @@ io.on("connection", async (socket) => {
   socket.on('end-game', async (payload) => {
     console.log('ending game for',socket.id)
     console.log('payload is', payload)
-    const gameToUpdate = await Game.findOne({_id: payload.gameId})
+    const gameToUpdate = await Game.find({_id: payload.gameId})
     gameToUpdate.participants.forEach((participant) => {
         if(participant.participant==socket.id) {
             console.log('found matching dude')
             console.log(participant.score)
             participant.score = payload.score
             console.log(participant.score,payload.score)
-            gameToUpdate.save()
+            gameToUpdate.save(function(err,doc) {
+                if (err) return console.log(err);
+                console.log('saved successfully')
+            })
         }
         
     })
