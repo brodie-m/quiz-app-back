@@ -38,11 +38,7 @@ let messages = {}
 io.on('connection',async (socket)=> {
     
     console.log('new websocket connection')
-    const emptyRooms = await Room.find({participants: {$size : 0}})
-        emptyRooms.forEach(room => {
-            console.log('pruning room', room)
-            room.delete()
-        })
+    
 
     console.log(socket.rooms)
     socket.on('connect_error', (err) => {
@@ -63,10 +59,11 @@ io.on('connection',async (socket)=> {
         if (!foundRoom.participants.includes(socket.id)){
         foundRoom.participants = [...foundRoom.participants, `${socket.id}`]
         console.log(`${socket.id} joined room ${room}`)}
+        const participants = foundRoom.participants
         await foundRoom.save()
         
         socket.join(room)
-        socket.emit('display-messages',{room: room, messages: messages[room] })
+        socket.emit('display-messages',{room: room, messages: messages[room], participants: participants })
         // socket.to(room).emit('display-messages',{room: room, messages: messages[room] })
         }
         catch (err) {
