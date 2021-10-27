@@ -77,8 +77,8 @@ io.on('connection',async (socket)=> {
         if (!messages[payload.room]) {messages[payload.room] =[]}
         messages[payload.room].push({username: payload.username, message : payload.message})
         console.log('message is',payload.message, 'sent to',payload.room)
-        socket.to(payload.room).emit('display-messages', {room: payload.room, messages: messages[payload.room]})
-        socket.emit('display-messages', {room: payload.room, messages: messages[payload.room]})
+        socket.to(payload.room).emit('display-messages', {room: payload.room, messages: messages[payload.room], participants: payload.participants})
+        socket.emit('display-messages', {room: payload.room, messages: messages[payload.room], participants: payload.participants})
     })
     
     socket.on('start-game', payload => {
