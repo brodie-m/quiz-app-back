@@ -96,6 +96,16 @@ io.on('connection',async (socket)=> {
 
         })
         await newGame.save()
+
+        const inter = setInterval(() => {
+                
+                if(intervalTime>=10000){
+                 
+                  
+                  //check if answer is right
+                  socket.emit('next-question')
+
+                }}, 100);
         
     })
 
