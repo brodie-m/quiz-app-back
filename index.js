@@ -97,11 +97,16 @@ io.on('connection',async (socket)=> {
         })
         
         await newGame.save()  
-        socket.on('load-question', () => {
-            setTimeout(() => {
-                socket.emit('next-question')
-            }, 10000);
-        })})
+        console.log(newGame._id)
+        socket.on('end-game', async (payload) => {
+            const gameToUpdate = await Game.findOne({newGame})
+            gameToUpdate.participants.forEach((participant) => {
+                if(participant===socket.id) {
+                    participant = {participant: participant, score: payload.score}
+                }
+            })
+            gameToUpdate.save()
+        })
 
 
     socket.on('disconnect', async () => {
@@ -115,6 +120,8 @@ io.on('connection',async (socket)=> {
         console.log('disconnecting')
         
     })
+
+    
 })
 
 
