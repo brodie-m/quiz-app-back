@@ -7,6 +7,7 @@ const dotenv = require("dotenv");
 const app = require("./server");
 const socketio = require("socket.io");
 const cors = require("cors");
+const User = require('./models/User')
 const Game = require("./models/Game");
 const server = http.createServer(app);
 const io = socketio(server, {
@@ -130,7 +131,7 @@ io.on("connection", async (socket) => {
     console.log('ending game for',socket.id)
     console.log('payload is', payload)
     await Game.updateOne({_id: payload.gameId}, {$push: {participants: {participant: socket.id, score: payload.score}}})
-    
+    await User.updateOne({_id: payload.userId})
     
 })
   socket.on("disconnect", async () => {
@@ -145,4 +146,8 @@ io.on("connection", async (socket) => {
   });
 });
 
-server.listen(PORT, () => console.log(`We are live on port ${PORT}`));
+server.listen(PORT, () => {
+  console.log(`We are live on port ${PORT}`)
+  console.log('pruning existing rooms')
+  Room.deleteMany({})
+});
