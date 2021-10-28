@@ -28,9 +28,10 @@ router.get('/completedgames', async (req,res) => {
     let leaderBoardArray = []
     foundGames.forEach(game => {
         game.participants.forEach(participant => {
-            if (participant.username && participant.score) {
-
-                leaderBoardArray.push({username: participant.username, score: participant.score})
+            if (participant.username && participant.score && game.difficulty) {
+                let scaleFactor = game.difficulty === 'easy' ? 1 : game.difficulty === 'medium' ? 2 : game.difficulty === 'hard' ? 3 : 4
+                let scaledScore = participant.score*scaleFactor
+                leaderBoardArray.push({username: participant.username, score: scaledScore})
             }
         })
     })

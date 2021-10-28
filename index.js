@@ -121,6 +121,7 @@ io.on("connection", async (socket) => {
     const newGame = new Game({
       participants: [],
       questions: payload.questions,
+      difficulty: payload.difficulty
     });
 
     await newGame.save();
