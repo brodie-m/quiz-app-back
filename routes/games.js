@@ -28,8 +28,10 @@ router.get('/completedgames', async (req,res) => {
     let leaderBoardArray = []
     foundGames.forEach(game => {
         game.participants.forEach(participant => {
-            console.log(participant.username, participant.score)
-            leaderBoardArray.push({username: participant.username, score: participant.score})
+            if (participant.username && participant.score) {
+
+                leaderBoardArray.push({username: participant.username, score: participant.score})
+            }
         })
     })
     leaderBoardArray.sort((a,b) => {b.score - a.score})
