@@ -146,8 +146,8 @@ io.on("connection", async (socket) => {
   });
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, async () => {
   console.log(`We are live on port ${PORT}`)
   console.log('pruning existing rooms')
-  Room.deleteMany({})
+  await Room.deleteMany({})
 });
