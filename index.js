@@ -131,7 +131,8 @@ io.on("connection", async (socket) => {
     console.log('ending game for',socket.id)
     console.log('payload is', payload)
     await Game.updateOne({_id: payload.gameId}, {$push: {participants: {participant: socket.id, username: payload.username, score: payload.score}}})
-    await User.updateOne({_id: payload.userId}, {$inc : {stats: {xp: payload.score, numGames: 1} }})
+    await User.updateOne({_id: payload.userId}, {$inc : {"stats.$.xp": payload.score}})
+    await User.updateOne({_id: payload.userId}, {$inc : {"stats.$.numGames": 1}})
     
 })
   socket.on("disconnect", async () => {
