@@ -24,6 +24,7 @@ router.get('/show/:name', async (req,res) => {
 })
 router.get('/completedgames', async (req,res) => {
     const foundGames = await Game.find();
+    console.log(foundGames)
     let leaderBoardArray = []
     foundGames.forEach(game => {
         game.participants.forEach(participant => {
