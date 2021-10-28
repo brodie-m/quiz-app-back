@@ -8,6 +8,10 @@ const gamesSchema = new mongoose.Schema({
     questions: {
         type: Array,
         required: true,
+    },
+    difficulty: {
+        type: String,
+        required: true,
     }
 })
 
