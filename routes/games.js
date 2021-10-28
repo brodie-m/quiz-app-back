@@ -33,6 +33,7 @@ router.get('/completedgames', async (req,res) => {
     leaderBoardArray.sort((a,b) => {b.score - a.score})
     const slicedArr = leaderBoardArray.slice(0,20)
     res.status(201).send(slicedArr)
+})
 
 router.get('/completedgames/:id', async (req,res) => {
     const foundGame = await Game.find({_id: req.params.id})
