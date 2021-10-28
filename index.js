@@ -135,6 +135,10 @@ io.on("connection", async (socket) => {
     await User.updateOne({_id: payload.userId}, {$inc : {"stats.numGames": 1}})
     
 })
+  socket.on('add-winner', async (payload) => {
+    console.log('adding winner', payload.username)
+    await User.updateOne({_id: payload.userId}, {$inc: {"stats.numWins": 1}})
+  })
   socket.on("disconnect", async () => {
     const foundRooms = await Room.find({ participants: `${socket.id}` });
     foundRooms.forEach((room) => {
