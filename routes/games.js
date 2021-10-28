@@ -23,8 +23,16 @@ router.get('/show/:name', async (req,res) => {
     res.status(201).json(result)
 })
 router.get('/completedgames', async (req,res) => {
-
-})
+    const foundGames = await Game.find();
+    let leaderBoardArray = []
+    foundGames.forEach(game => {
+        game.participants.forEach(participant => {
+            leaderBoardArray.push({username: participant.username, score: participant.score})
+        })
+    })
+    leaderBoardArray.sort((a,b) => {b.score - a.score})
+    const slicedArr = leaderBoardArray.slice(0,20)
+    res.status(201).send(slicedArr)
 
 router.get('/completedgames/:id', async (req,res) => {
     const foundGame = await Game.find({_id: req.params.id})
