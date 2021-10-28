@@ -23,7 +23,7 @@ router.get('/show/:name', async (req,res) => {
     res.status(201).json(result)
 })
 router.get('/completedgames', async (req,res) => {
-    const foundGames = await Game.find({'participants.$.score': {$gte: 2}});
+    const foundGames = await Game.find({});
     
     let leaderBoardArray = []
     foundGames.forEach(game => {
