@@ -41,6 +41,15 @@ mongoose.connect(
 );
 let users = [];
 let messages = {};
+async function setLevel(userId) {
+  const levelMultiplier = 100
+  const foundUser = await User.findOne({_id: userId})
+  const excessXp = foundUser.stats.xp - foundUser.stats.level * levelMultiplier
+  if (excessXp >= 0) {
+    await User.updateOne({_id: userId}, {$set: {'stats.xp': excessXp}})
+    await User.updateOne({_id: userId}, {$inc: {'stats.level': 1}})
+  }
+}
 //run when client connects
 io.on("connection", async (socket) => {
   console.log("new websocket connection");
@@ -133,12 +142,14 @@ io.on("connection", async (socket) => {
     await Game.updateOne({_id: payload.gameId}, {$push: {participants: {participant: socket.id, username: payload.username, score: payload.score}}})
     await User.updateOne({_id: payload.userId}, {$inc : {"stats.xp": payload.score}})
     await User.updateOne({_id: payload.userId}, {$inc : {"stats.numGames": 1}})
+    await setLevel(payload.userId)
     
 })
   socket.on('add-winner', async (payload) => {
     console.log('adding winner', payload.username)
     await User.updateOne({_id: payload.userId}, {$inc: {"stats.numWins": 1}})
     await User.updateOne({_id: payload.userId}, {$inc : {"stats.xp": 10}})
+    await setLevel(payload.userId)
   })
   socket.on("disconnect", async () => {
     const foundRooms = await Room.find({ participants: `${socket.id}` });
