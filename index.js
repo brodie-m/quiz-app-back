@@ -12,7 +12,7 @@ const Game = require("./models/Game");
 const server = http.createServer(app);
 const io = socketio(server, {
   cors: {
-    origin: "https://inquizzy.netlify.app/",
+    origin: "https://inquizzy.netlify.app",
     methods: ["GET", "POST"],
     allowedHeaders: [],
     credentials: true,
